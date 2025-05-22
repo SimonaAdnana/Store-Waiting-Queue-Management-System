@@ -1,4 +1,4 @@
-# Store-Waiting-Queue-Management-System
+# C++ Store-Waiting-Queue-Management-System
 Description:
 This C++ project simulates and manages a waiting queue for customers at a store. It provides a simple and efficient way to handle customer flow using basic data structures and object-oriented programming principles. The system allows for the addition of new customers to the queue, removal of customers once they are served, and the display of the current queue status.
 Key Features:
