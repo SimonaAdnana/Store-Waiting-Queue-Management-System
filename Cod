@@ -1,0 +1,157 @@
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+struct Client {
+    char nume[50];
+    int nrProduse;
+    Client* urmator;
+};
+
+Client* inceput = NULL;
+Client* sfarsit = NULL;
+
+Adaugă client
+void adaugaClient() {
+    Client* nou = new Client;
+
+    cout << "Introdu numele clientului: ";
+    cin >> nou->nume;
+
+    cout << "Introdu numarul de produse: ";
+    cin >> nou->nrProduse;
+
+    nou->urmator = NULL;
+
+    if (inceput == NULL) {
+        inceput = sfarsit = nou;
+    } else {
+        sfarsit->urmator = nou;
+        sfarsit = nou;
+    }
+
+    cout << "Clientul a fost adaugat in coada.\n";
+}
+
+
+void servesteClient() {
+    if (inceput == NULL) {
+        cout << "Coada este goala.\n";
+        return;
+    }
+
+    Client* temp = inceput;
+    cout << "Servim clientul: " << temp->nume << " cu " << temp->nrProduse << " produse.\n";
+
+    inceput = inceput->urmator;
+    delete temp;
+
+    if (inceput == NULL)
+        sfarsit = NULL;
+}
+
+
+void afiseazaCoada() {
+    if (inceput == NULL) {
+        cout << "Coada este goala.\n";
+        return;
+    }
+
+    cout << "Clientii din coada:\n";
+    Client* temp = inceput;
+    while (temp != NULL) {
+        cout << "- " << temp->nume << " (" << temp->nrProduse << " produse)\n";
+        temp = temp->urmator;
+    }
+}
+
+ 
+void cautaClient() {
+    if (inceput == NULL) {
+        cout << "Coada este goala.\n";
+        return;
+    }
+
+    char cautaNume[50];
+    cout << "Introdu numele clientului de cautat: ";
+    cin >> cautaNume;
+
+    Client* temp = inceput;
+    bool gasit = false;
+
+    while (temp != NULL) {
+        if (strcmp(temp->nume, cautaNume) == 0) {
+            cout << "Clientul " << temp->nume << " este in coada cu " << temp->nrProduse << " produse.\n";
+            gasit = true;
+            break;
+        }
+        temp = temp->urmator;
+    }
+
+    if (!gasit)
+        cout << "Clientul nu a fost gasit in coada.\n";
+}
+
+
+void estimeazaTimp() {
+    if (inceput == NULL) {
+        cout << "Coada este goala.\n";
+        return;
+    }
+
+    char numeClient[50];
+    cout << "Introdu numele clientului pentru estimare timp: ";
+    cin >> numeClient;
+
+    Client* temp = inceput;
+    int timpTotal = 0;
+    bool gasit = false;
+
+    while (temp != NULL) {
+        if (strcmp(temp->nume, numeClient) == 0) {
+            gasit = true;
+            break;
+        }
+        timpTotal += temp->nrProduse; // fiecare produs durează 1 minut
+        temp = temp->urmator;
+    }
+
+    if (gasit) {
+        cout << "Timp estimat pana cand " << numeClient << " va fi servit: " << timpTotal << " minute.\n";
+    } else {
+        cout << "Clientul nu a fost gasit in coada.\n";
+    }
+}
+
+
+void meniu() {
+    int optiune;
+    do {
+        cout << "\n=== Meniu Magazin ===\n";
+        cout << "1. Adauga client in coada\n";
+        cout << "2. Serveste client\n";
+        cout << "3. Afiseaza coada\n";
+        cout << "4. Cauta client\n";
+        cout << "5. Estimeaza timp pentru client\n";
+        cout << "6. Iesire\n";
+        cout << "Alege o optiune: ";
+        cin >> optiune;
+
+        switch(optiune) {
+            case 1: adaugaClient(); break;
+            case 2: servesteClient(); break;
+            case 3: afiseazaCoada(); break;
+            case 4: cautaClient(); break;
+            case 5: estimeazaTimp(); break;
+            case 6: cout << "Iesire...\n"; break;
+            default: cout << "Optiune invalida!\n";
+        }
+
+    } while (optiune != 6);
+}
+
+int main() {
+    meniu();
+    return 0;
+}
+
